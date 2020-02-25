@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>avatar_jump_default.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{75,68}</string>
+                <key>spriteSourceSize</key>
+                <string>{75,68}</string>
+                <key>textureRect</key>
+                <string>{{1,1},{75,68}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>player_jump.png</string>
+            <key>size</key>
+            <string>{77,70}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:6ed3d284d68a84dfc8bd15f549724774:5675e3975a27c8b0e8eeb48e1450783c:834a646e77fab6b23307d796d05f15f8$</string>
+            <key>textureFileName</key>
+            <string>player_jump.png</string>
+        </dict>
+    </dict>
+</plist>
