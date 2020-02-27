@@ -1,7 +1,7 @@
 {
   "title": "ExX",
   "packageName": "",
-  "startScene": "94eb6a12-697e-4c1d-b0b1-29358370c18a",
+  "startScene": "c47897ae-3641-4fc6-b219-902c7108b476",
   "excludeScenes": [],
   "includeSDKBox": false,
   "orientation": {
@@ -10,12 +10,12 @@
     "portrait": false,
     "upsideDown": false
   },
-  "webOrientation": "auto",
+  "webOrientation": "landscape",
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
   "mergeStartScene": false,
   "optimizeHotUpdate": false,
-  "md5Cache": false,
+  "md5Cache": true,
   "encryptJs": true,
   "xxteaKey": "620c3309-450e-47",
   "zipCompressJs": true,

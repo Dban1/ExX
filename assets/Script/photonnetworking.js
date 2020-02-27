@@ -12,8 +12,6 @@ cc.Class({
         }
         console.log('yea');
         this.loadBalancingClient.connect({lobbyStats : true});
-        // this.chatClient = new Photon.Chat.ChatClient(0, 'e4e8e1d7-7dfe-421e-8621-3d176263ba88', '1.0');
-        // this.chatClient.connectToRegionFrontEnd('asia');
     },
 
     update (dt) {

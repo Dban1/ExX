@@ -31,10 +31,14 @@ cc.Class({
         this._moveFlag = 0;
         this.isJump = false;
         this.touchingCount = 0;
+        this.usingSkill = 0;
 
         this.body = this.node.getComponent(cc.RigidBody);
         this.animation = this.node.getChildByName("anim").getComponent(cc.Animation);
         this.animState = this.animation.getAnimationState("player_attack");
+
+        this.skillAnim = this.node.getChildByName("skill").getComponent(cc.Animation);
+        this.skillAnimState = this.skillAnim.getAnimationState("skill_brandish");
 
         this.fsm = new import_fsm.player_fsm(this);
     },
@@ -50,18 +54,26 @@ cc.Class({
             case cc.macro.KEY.space:
                 if (this.isOnFloor) {this.isJump = true};
                 break;
+            case cc.macro.KEY.c:
+                this.usingSkill = 1;
+                break;
+
         }
     },
 
     onBeginContact: function (contact, selfCollider, otherCollider) {
-        console.log("contact");
-        this.touchingCount++;
-        this.isOnFloor = true;
+        var normal = contact.getManifold().localNormal;
+        if(normal.x == 0) {
+            this.isOnFloor = true;
+        }
     },
 
     onEndContact: function (contact, selfCollider, otherCollider) {
-        console.log("left contact");
-        if (--this.touchingCount == 0) {this.isOnFloor = false};
+        // if (--this.touchingCount == 0) {this.isOnFloor = false};
+        let normal = contact.getManifold().localNormal;
+        if(normal.x == 0) {
+            this.isOnFloor = false;
+        }
     },
 
     onKeyUp: function (event) {

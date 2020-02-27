@@ -3,7 +3,9 @@
     "default",
     "player",
     "platform",
-    "monster"
+    "monster",
+    "backlayer1",
+    "backlayer2"
   ],
   "collision-matrix": [
     [
@@ -28,6 +30,21 @@
       false,
       true,
       false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
     ]
   ],
   "excluded-modules": [
@@ -35,7 +52,7 @@
     "3D Physics/Builtin",
     "3D Particle"
   ],
-  "last-module-event-record-time": 1582102779360,
+  "last-module-event-record-time": 1582761997254,
   "design-resolution-width": 960,
   "design-resolution-height": 640,
   "fit-width": true,
