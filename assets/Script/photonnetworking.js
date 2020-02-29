@@ -10,7 +10,6 @@ cc.Class({
             + ",errMsg: " + errMsg
             + ",lobbies: " + lobbies);
         }
-        console.log('yea');
         this.loadBalancingClient.connect({lobbyStats : true});
     },
 

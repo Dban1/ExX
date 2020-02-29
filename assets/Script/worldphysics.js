@@ -34,13 +34,9 @@ cc.Class({
 
         var collisionManager = cc.director.getCollisionManager();
         collisionManager.enabled = true;
-        // collisionManager.enabledDebugDraw = true;
-        // collisionManager.enabledDrawBoundingBox = true;
-    },
-
-    start () {
-
-    },
+        collisionManager.enabledDebugDraw = true;
+        collisionManager.enabledDrawBoundingBox = true;
+    }
 
     // update (dt) {},
 });

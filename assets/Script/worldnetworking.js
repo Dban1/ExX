@@ -5,7 +5,6 @@ cc.Class({
 
     onLoad () {
         this.client = new Colyseus.Client("ws://127.0.0.1:2567");
-        console.log('yea');
 
         this.client.create("battle", {/* options */}).then(room => {
             console.log("joined successfully", room);

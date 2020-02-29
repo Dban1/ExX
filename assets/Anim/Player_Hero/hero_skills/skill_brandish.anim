@@ -35,7 +35,8 @@
               "__type__": "cc.Size",
               "width": 0,
               "height": 0
-            }
+            },
+            "curve": "constant"
           },
           {
             "frame": 0.16666666666666666,
@@ -43,14 +44,15 @@
               "__type__": "cc.Size",
               "width": 129.9,
               "height": 106.2
-            }
+            },
+            "curve": "constant"
           },
           {
-            "frame": 0.5,
+            "frame": 0.75,
             "value": {
               "__type__": "cc.Size",
-              "width": 146.1,
-              "height": 106.2
+              "width": 0,
+              "height": 0
             }
           }
         ]
@@ -143,7 +145,7 @@
   },
   "events": [
     {
-      "frame": 0.75,
+      "frame": 0.7666666666666667,
       "func": "endAnim",
       "params": []
     }

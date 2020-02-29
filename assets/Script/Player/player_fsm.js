@@ -3,7 +3,6 @@ const LEFT_DIR = 1;
 const RIGHT_DIR = 2;
 
 exports.player_fsm = function(noder) {
-    console.log("creating");
     this.fsm = new StateMachine({
         init: 'idle',
         transitions: [
@@ -47,7 +46,6 @@ exports.player_fsm = function(noder) {
                     if (ref.node.scaleX > 0) {
                         ref.node.scaleX *= -1;
                     }
-                    console.log("right yose");
                     this.fsm.walk();
                     break;
                 }
@@ -150,8 +148,7 @@ exports.player_fsm = function(noder) {
                     } else {
                         speed.x -= speed.x > 0 ? d : -d;
                     }
-                }                  
-                console.log("ref.usingSkill = " + ref.usingSkill);
+                }
                 if (!ref.skillAnimState.isPlaying) {
                     this.fsm.idle();
                 }

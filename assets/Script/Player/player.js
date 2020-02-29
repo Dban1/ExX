@@ -61,11 +61,16 @@ cc.Class({
         }
     },
 
+    onCollisionEnter: function(other, self) {
+        console.log("ON COLLISION");
+    },
+
     onBeginContact: function (contact, selfCollider, otherCollider) {
         var normal = contact.getManifold().localNormal;
         if(normal.x == 0) {
             this.isOnFloor = true;
         }
+        console.log(otherCollider.name);
     },
 
     onEndContact: function (contact, selfCollider, otherCollider) {
@@ -88,7 +93,6 @@ cc.Class({
                 this.isJump = false;
                 break;
         }
-        console.log(event.keyCode + " up");
     },
 
     start() {
@@ -102,7 +106,6 @@ cc.Class({
     },
 
     update(dt) {
-        var speed = this.body.linearVelocity;
         this.fsm.process(this, dt);
     },
 });

@@ -51,7 +51,16 @@
       }
     },
     "props": {
-      "position": []
+      "position": [
+        {
+          "frame": 0,
+          "value": [
+            -12.802,
+            -0.986,
+            0
+          ]
+        }
+      ]
     }
   },
   "events": []
