@@ -61,8 +61,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        567.95,
-        550.278,
+        690.768,
+        242,
         0,
         0,
         0,
@@ -128,7 +128,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0.146,
+        -3.522,
         0,
         0,
         0,
@@ -262,12 +262,12 @@
     "tag": 0,
     "_density": 1,
     "_sensor": false,
-    "_friction": 1,
+    "_friction": 0,
     "_restitution": 0,
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0.9,
+      "x": -4.6,
       "y": -4.1
     },
     "_size": {
@@ -303,7 +303,8 @@
     "gravity": -1000,
     "acceleration": 3500,
     "jumpSpeed": 50,
-    "drag": 100,
+    "drag": 300,
+    "hp": 100,
     "_id": ""
   },
   {
@@ -317,7 +318,7 @@
     "tag": 0,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0.9,
+      "x": -4.6,
       "y": -4.1
     },
     "_size": {

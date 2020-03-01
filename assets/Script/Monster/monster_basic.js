@@ -5,6 +5,7 @@
  * - Non-skilled
  */
 const StateMachine = require("./../state-machine");
+const StateMachineHistory = require("./../state-machine-history");
 const Random = require("Random");
 const LEFT_DIR = 1;
 const RIGHT_DIR = 2;
@@ -25,7 +26,9 @@ cc.Class({
         gravity: -1000,
         acceleration: 3500,
         jumpSpeed: 50,
-        drag: 100
+        drag: 100,
+
+        hp: 100,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -38,6 +41,8 @@ cc.Class({
         this.usingSkill = 0;
         this.randomGen = new Random(this.node.x);
         this.randomTime = 2;
+        this.hit = 0;
+        this.prevState = 'idle';
 
         this.body = this.node.getComponent(cc.RigidBody);
         this.animation = this.node.getChildByName("anim").getComponent(cc.Animation);
@@ -51,14 +56,17 @@ cc.Class({
         var fsm = new StateMachine({
             init: 'idle',
             transitions: [
-                { name: 'walk', from: 'idle', to: 'walk' },
-                { name: 'idle', from: 'walk', to: 'idle' },
+                { name: 'walk', from: ['idle', 'hit'], to: 'walk' },
+                { name: 'idle', from: ['walk', 'hit'], to: 'idle' },
                 { name: 'hit', from: ['walk', 'idle', 'jump'], to: 'hit'}
+            ],
+            plugins: [
+                new StateMachineHistory()
             ],
             methods: {
                 onWalk: function () { noder.animState = noder.animation.play(noder.walkAnim.name);},
-                onIdle: function () { noder.animState = noder.animation.play(noder.idleAnim.name); console.log('idling');},
-                onHit: function() { noder.animState = noder.animation.play(noder.hitAnim.name); }
+                onIdle: function () { noder.animState = noder.animation.play(noder.idleAnim.name);},
+                onHit: function() { noder.animState = noder.animation.play(noder.hitAnim.name); noder.getHit();}
             }
         });
         return fsm;
@@ -68,11 +76,14 @@ cc.Class({
         this.randomTime = 1 + this.randomGen.nextFloat() * 2;
     },
     
-
     process: function(dt) {
         var speed = this.body.linearVelocity;
         switch (this.fsm.state) {
             case 'idle': {
+                if (this.hit > 0) {
+                    this.fsm.hit();
+                    break;
+                }
                 if (this._moveFlag === LEFT_DIR) {
                     if (this.node.scaleX < 0) {
                         this.node.scaleX *= -1;
@@ -98,6 +109,11 @@ cc.Class({
                 break;
             }
             case 'walk': {
+                if (this.hit > 0) {
+                    this.prevState = this.fsm.state;
+                    this.fsm.hit();
+                    break;
+                }
                 if (this._moveFlag === LEFT_DIR) {
                     if (this.node.scaleX < 0) {
                         this.node.scaleX *= -1;
@@ -115,23 +131,16 @@ cc.Class({
                         speed.x = this.maxSpeed;
                     }
                 } else {
-                    // if(speed.x != 0) {
-                    //     var d = this.drag * dt;
-                    //     if(Math.abs(speed.x) <= d) {
-                    //         speed.x = 0;
-                    //         if (this.isOnFloor) {
-                    //             this.fsm.idle();
-                    //         }
-                    //     } else {
-                    //         speed.x -= speed.x > 0 ? d : -d;
-                    //     }
-                    // }
                     this.fsm.idle();
                 }
                 this.body.linearVelocity = speed;
                 break;
             }
             case 'jump': {
+                if (this.hit) {
+                    this.fsm.hit();
+                    break;
+                }
                 if (this._moveFlag === LEFT_DIR) {
                     if (this.node.scaleX < 0) {
                         this.node.scaleX *= -1;
@@ -165,14 +174,45 @@ cc.Class({
                 }
                 break;
             }
+            case 'hit': {
+                break;
+            }
         }
+    },
+
+    getHit: function() {
+        this.randomTime = 0.5;
+        var speed = this.body.linearVelocity;
+        if (this.hit &= RIGHT_DIR) {
+            if (this.node.scaleX < 0) {
+                this.node.scaleX *= -1;
+            }
+            speed.x = 50;
+            speed.y = 150;
+        } else {
+            if (this.node.scaleX > 0) {
+                this.node.scaleX *= -1;
+            }
+            speed.x = -50;
+            speed.y = 150;
+        }
+        this.body.linearVelocity = speed;
+        return;
     },
 
     update(dt) {
         this.process(dt);
         this.randomTime -= dt;
-        if (this.randomTime <= 0) {
-            this.randomDir();
+        if (this.randomTime <= 0 ) {
+            switch(this.fsm.state) {
+            case 'hit':
+                this.hit = 0;
+                this.fsm.historyBack();
+                break;
+            default:
+                this.randomDir();
+                break;
+            }
         }
     }
 });
