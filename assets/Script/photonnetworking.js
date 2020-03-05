@@ -11,17 +11,20 @@ cc.Class({
             + ",lobbies: " + lobbies);
         }
         this.loadBalancingClient.connectToRegionMaster("asia");
-        this.schedule(() => this.checkConnect(),
+        this.testConnect = () => this.checkConnect();
+        this.schedule(this.testConnect,
             2);
     },
 
     checkConnect: function() {
-        console.log("in here! " +this.loadBalancingClient.isConnectedToMaster());
         if(this.loadBalancingClient.isConnectedToMaster()) {
             let label = cc.find("Network Rooms Label");
             label.getComponent(cc.Label).string = "Connected!";
+            this.loadBalancingClient.createRoom();
+            this.unschedule(this.testConnect);
         }
     },
     update (dt) {
+
     },
 });

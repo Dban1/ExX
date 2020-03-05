@@ -17,18 +17,17 @@ cc.Class({
     onLoad () {
         this.anim = this.node.getComponent(cc.Animation);
         this.animState = this.anim.getAnimationState();
+        // this.mobCount = 1;
     },
 
     onCollisionEnter: function(self, other) {
+        // if (this.mobCount-- <= 0) {return;}
         let selfw = self.node.convertToWorldSpaceAR(cc.v2());
         let otherw = other.node.convertToWorldSpaceAR(cc.v2());
-        console.log(otherw.x+" vs "+selfw.x);
         if (selfw.x > otherw.x) { //monster on left side
             self.node.getComponent("monster_basic").hit = RIGHT_DIR;
-            console.log("hit right dir");
         } else {
             self.node.getComponent("monster_basic").hit = LEFT_DIR;
-            console.log("hit left dir");
         }
     },
 
@@ -39,5 +38,6 @@ cc.Class({
     endAnim: function() {
         this.node.getComponent(cc.BoxCollider).enabled = false;
         this.animState = this.anim.play("skill_empty");
+        // this.mobCount = 1;
     }
 });

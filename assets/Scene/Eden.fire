@@ -35,10 +35,13 @@
         "__id__": 125
       },
       {
+        "__id__": 127
+      },
+      {
         "__id__": 11
       },
       {
-        "__id__": 127
+        "__id__": 129
       }
     ],
     "_active": false,
@@ -210,7 +213,7 @@
       "array": [
         0,
         0,
-        439.0748797187104,
+        432.14667648843493,
         0,
         0,
         0,
@@ -433,7 +436,7 @@
       "array": [
         0,
         0,
-        439.0748797187104,
+        432.14667648843493,
         0,
         0,
         0,
@@ -993,7 +996,7 @@
       "array": [
         0,
         0,
-        439.0748797187104,
+        432.14667648843493,
         0,
         0,
         0,
@@ -1109,7 +1112,7 @@
       "array": [
         -26.081,
         -27.149,
-        439.0748797187104,
+        432.14667648843493,
         0,
         0,
         0,
@@ -4765,6 +4768,52 @@
   },
   {
     "__type__": "cc.Node",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_id": "9a3pK6+yVPBrlgo+izWBf0",
+    "_prefab": {
+      "__id__": 128
+    },
+    "_name": "monster",
+    "_active": true,
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        774.428,
+        242,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 127
+    },
+    "asset": {
+      "__uuid__": "e79a9a34-4969-4b59-a082-b0c3ae2ea963"
+    },
+    "fileId": "06oGJRlZxK2qFAJ0xvRTpj",
+    "sync": true
+  },
+  {
+    "__type__": "cc.Node",
     "_name": "WorldNetworking",
     "_objFlags": 0,
     "_parent": {
@@ -4774,7 +4823,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 128
+        "__id__": 130
       }
     ],
     "_prefab": null,
@@ -4830,7 +4879,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 127
+      "__id__": 129
     },
     "_enabled": true,
     "_id": "a7Z3hJlvRB2JSkfqSjienr"
