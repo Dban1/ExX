@@ -181,20 +181,20 @@ cc.Class({
     },
 
     getHit: function() {
-        this.randomTime = 0.5;
+        this.randomTime = 0.4;
         var speed = this.body.linearVelocity;
         if (this.hit &= RIGHT_DIR) {
             if (this.node.scaleX < 0) {
                 this.node.scaleX *= -1;
             }
-            speed.x = 50;
-            speed.y = 150;
+            speed.x = 100;
+            speed.y = 100;
         } else {
             if (this.node.scaleX > 0) {
                 this.node.scaleX *= -1;
             }
-            speed.x = -50;
-            speed.y = 150;
+            speed.x = 100;
+            speed.y = 100;
         }
         this.body.linearVelocity = speed;
         return;
