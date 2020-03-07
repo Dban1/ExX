@@ -1,46 +1,48 @@
 // const Photon = require('Photon-Javascript_SDK');
+const Global = require('Global');
 
 cc.Class({
     extends: cc.Component,
     
     onLoad () {
-        this.loadBalancingClient = new Photon.LoadBalancing.LoadBalancingClient(1, 'af962eb6-4b15-4488-a09b-8243a448d4ba', '1.0');
-        this.loadBalancingClient.onJoinRoom = function(createdByMe) {
+        Global.LBC = new Photon.LoadBalancing.LoadBalancingClient(1, 'af962eb6-4b15-4488-a09b-8243a448d4ba', '1.0');
+        Global.LBC.onJoinRoom = function(createdByMe) {
             cc.systemEvent.emit("joinedRoom");
         }
-        this.loadBalancingClient.onEvent = function(code, content, actorNr) {
+        Global.LBC.onEvent = function(code, content, actorNr) {
             switch(code) {
                 case 0:
-                    console.log(" has joined");
+                    console.log("EVENT RECEIVED: " + content.a);
                     break;
             }
         }
         cc.systemEvent.on("joinedRoom", this.joinConfirmed, this);
-        this.loadBalancingClient.onLobbyStats = function(errCode, errMsg, lobbies) {
+        Global.LBC.onLobbyStats = function(errCode, errMsg, lobbies) {
             console.log("onLobbyStats: errorCode " + errCode
             + ",errMsg: " + errMsg
             + ",lobbies: " + lobbies);
         }
-        this.loadBalancingClient.connectToRegionMaster("asia");
+        Global.LBC.connectToRegionMaster("asia");
         this.testConnect = () => this.checkConnect();
         this.schedule(this.testConnect, 2);
     },
 
     checkConnect: function() {
-        if(this.loadBalancingClient.isConnectedToMaster()) {
+        if(Global.LBC.isConnectedToMaster()) {
             let label = cc.find("Network Rooms Label");
             label.getComponent(cc.Label).string = "Connected!";
-            if (this.loadBalancingClient.availableRooms().length == 0) {    
-                this.loadBalancingClient.createRoom();
+            if (Global.LBC.availableRooms().length == 0) {    
+                Global.LBC.createRoom();
             } else {
-                this.loadBalancingClient.joinRandomRoom();
+                Global.LBC.joinRandomRoom();
             }
             this.unschedule(this.testConnect);
         }
     },
 
     joinConfirmed: function() {
-        console.log("joined room: " + this.loadBalancingClient.myRoom().name);
+        console.log("joined room: " + Global.LBC.myRoom().name);
+        Global.LBC.myActor().raiseEvent(0, {a: 1}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
         cc.systemEvent.off("joinedRoom");
     },
 
