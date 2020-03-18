@@ -65,11 +65,13 @@
     ]
   ],
   "excluded-modules": [
+    "3D",
+    "3D Primitive",
     "3D Physics/cannon.js",
     "3D Physics/Builtin",
     "3D Particle"
   ],
-  "last-module-event-record-time": 1582761997254,
+  "last-module-event-record-time": 1583851332924,
   "design-resolution-width": 1024,
   "design-resolution-height": 720,
   "fit-width": true,

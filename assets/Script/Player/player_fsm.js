@@ -20,6 +20,8 @@ exports.player_fsm = function(noder) {
             onSkill1: function() {
                 noder.animState = noder.animation.play("hero_skill1");
                 noder.skillAnimState = noder.skillAnim.play("skill_brandish");
+                cc.audioEngine.setEffectsVolume(0.1);
+                cc.audioEngine.playEffect(noder.skillSound);
             }
         }
     }),
@@ -141,6 +143,7 @@ exports.player_fsm = function(noder) {
             }
             case 'skill1': {
                 ref.usingSkill = 0;
+                // cc.audioEngine.playEffect(noder.getChildByName('sound').getComponent(cc.AudioSource).clip);
                 if(speed.x != 0 && ref.isOnFloor) {
                     var d = ref.drag * dt;
                     if(Math.abs(speed.x) <= d) {

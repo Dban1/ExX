@@ -39,6 +39,7 @@ cc.Class({
 
         this.skillAnim = this.node.getChildByName("skill").getComponent(cc.Animation);
         this.skillAnimState = this.skillAnim.getAnimationState("skill_brandish");
+        this.skillSound = this.node.getChildByName("sound").getComponent(cc.AudioSource).clip;
 
         this.fsm = new import_fsm.player_fsm(this);
     },

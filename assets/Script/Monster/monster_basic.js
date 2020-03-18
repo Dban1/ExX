@@ -193,7 +193,7 @@ cc.Class({
             if (this.node.scaleX > 0) {
                 this.node.scaleX *= -1;
             }
-            speed.x = 100;
+            speed.x = -100;
             speed.y = 100;
         }
         this.body.linearVelocity = speed;

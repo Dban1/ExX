@@ -1,6 +1,8 @@
 // const Photon = require('Photon-Javascript_SDK');
 const Global = require('Global');
-
+const EventType = {
+    ONJOIN: 1,
+}
 cc.Class({
     extends: cc.Component,
     
@@ -11,17 +13,12 @@ cc.Class({
         }
         Global.LBC.onEvent = function(code, content, actorNr) {
             switch(code) {
-                case 0:
+                case EventType.ONJOIN:
                     console.log("EVENT RECEIVED: " + content.a);
                     break;
             }
         }
         cc.systemEvent.on("joinedRoom", this.joinConfirmed, this);
-        Global.LBC.onLobbyStats = function(errCode, errMsg, lobbies) {
-            console.log("onLobbyStats: errorCode " + errCode
-            + ",errMsg: " + errMsg
-            + ",lobbies: " + lobbies);
-        }
         Global.LBC.connectToRegionMaster("asia");
         this.testConnect = () => this.checkConnect();
         this.schedule(this.testConnect, 2);
@@ -42,7 +39,7 @@ cc.Class({
 
     joinConfirmed: function() {
         console.log("joined room: " + Global.LBC.myRoom().name);
-        Global.LBC.myActor().raiseEvent(0, {a: 1}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
+        Global.LBC.myActor().raiseEvent(EventType.ONJOIN, {a: 1}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
         cc.systemEvent.off("joinedRoom");
     },
 
