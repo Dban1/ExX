@@ -87,5 +87,11 @@
       ]
     }
   },
-  "events": []
+  "events": [
+    {
+      "frame": 0.75,
+      "func": "dieAnim",
+      "params": []
+    }
+  ]
 }

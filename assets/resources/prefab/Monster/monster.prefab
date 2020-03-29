@@ -24,9 +24,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 6
-      },
-      {
         "__id__": 7
       },
       {
@@ -34,10 +31,13 @@
       },
       {
         "__id__": 9
+      },
+      {
+        "__id__": 10
       }
     ],
     "_prefab": {
-      "__id__": 10
+      "__id__": 11
     },
     "_opacity": 255,
     "_color": {
@@ -61,7 +61,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        690.768,
+        774.428,
         242,
         0,
         0,
@@ -101,10 +101,13 @@
       },
       {
         "__id__": 4
+      },
+      {
+        "__id__": 5
       }
     ],
     "_prefab": {
-      "__id__": 5
+      "__id__": 6
     },
     "_opacity": 255,
     "_color": {
@@ -216,6 +219,22 @@
     "_id": ""
   },
   {
+    "__type__": "bf50cgHRcxMSI0HIA1eLdNG",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "parentNode": {
+      "__id__": 1
+    },
+    "damage": 0,
+    "effectName": "",
+    "hitSound": null,
+    "_id": ""
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -298,6 +317,9 @@
       "__uuid__": "c715b0dd-e252-4520-a730-08d6235928c2"
     },
     "jumpAnim": null,
+    "dieSound": {
+      "__uuid__": "f2c536a1-25bb-4e8c-af97-14aa9d23477d"
+    },
     "hasJump": false,
     "maxSpeed": 75,
     "gravity": -1000,

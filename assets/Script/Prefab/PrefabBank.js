@@ -1,10 +1,3 @@
-// Learn cc.Class:
-//  - https://docs.cocos.com/creator/manual/en/scripting/class.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
 cc.Class({
     extends: cc.Component,
 
@@ -12,25 +5,26 @@ cc.Class({
         monster: {
             type: cc.Prefab,
             default: null
-        },
-        test: {
-            type:cc.Integer,
-            default:5
         }
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        var self = this;
         cc.loader.loadRes("prefab/Monster/monster", function(err, fab) {
             if (err) {
                 console.log(err);
                 return;
             }
-            this.monster = fab;
-            console.log("loaded successfully: " + (fab instanceof cc.Prefab));
+            self.node.getComponent("PrefabBank").monster = fab;
         });
-        cc.instantiate(this.monster);
+        // this.schedule(() => {
+        //     console.log(this.monster);
+        //     let node = cc.instantiate(this.monster);
+        //     node.parent = cc.director.getScene().getChildByName("Monster_Layer");
+        //     node.setPosition(0, 300);
+        // }, 2);
     },
 
     start () {

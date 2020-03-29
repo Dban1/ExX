@@ -20,6 +20,11 @@ cc.Class({
         dieAnim: cc.AnimationClip,
         jumpAnim: cc.AnimationClip,
 
+        dieSound: {
+            type: cc.AudioClip,
+            default: null,
+        },
+
         hasJump: cc.Boolean,
 
         maxSpeed: 50,
@@ -48,7 +53,7 @@ cc.Class({
         this.animation = this.node.getChildByName("anim").getComponent(cc.Animation);
         this.animState = this.animation.getAnimationState(this.idleAnim);
         
-        this.fsm = this.createFsm(this)
+        this.fsm = this.createFsm(this);
 
     },
 
@@ -58,7 +63,8 @@ cc.Class({
             transitions: [
                 { name: 'walk', from: ['idle', 'hit'], to: 'walk' },
                 { name: 'idle', from: ['walk', 'hit'], to: 'idle' },
-                { name: 'hit', from: ['walk', 'idle', 'jump'], to: 'hit'}
+                { name: 'hit', from: ['walk', 'idle', 'jump'], to: 'hit'},
+                { name: 'die', from: '*', to: 'die'}
             ],
             plugins: [
                 new StateMachineHistory()
@@ -66,7 +72,11 @@ cc.Class({
             methods: {
                 onWalk: function () { noder.animState = noder.animation.play(noder.walkAnim.name);},
                 onIdle: function () { noder.animState = noder.animation.play(noder.idleAnim.name);},
-                onHit: function() { noder.animState = noder.animation.play(noder.hitAnim.name); noder.getHit();}
+                onHit: function() { noder.animState = noder.animation.play(noder.hitAnim.name); noder.getHit();},
+                onDie: function() {
+                    noder.animState = noder.animation.play(noder.dieAnim.name);
+                    cc.audioEngine.playEffect(noder.dieSound);
+                }
             }
         });
         return fsm;
@@ -80,6 +90,10 @@ cc.Class({
         var speed = this.body.linearVelocity;
         switch (this.fsm.state) {
             case 'idle': {
+                if (this.hp < 0) {
+                    this.fsm.die();
+                    break;
+                }
                 if (this.hit > 0) {
                     this.fsm.hit();
                     break;
@@ -109,6 +123,10 @@ cc.Class({
                 break;
             }
             case 'walk': {
+                if (this.hp < 0) {
+                    this.fsm.die();
+                    break;
+                }
                 if (this.hit > 0) {
                     this.prevState = this.fsm.state;
                     this.fsm.hit();
@@ -137,8 +155,8 @@ cc.Class({
                 break;
             }
             case 'jump': {
-                if (this.hit) {
-                    this.fsm.hit();
+                if (this.hp < 0) {
+                    this.fsm.die();
                     break;
                 }
                 if (this._moveFlag === LEFT_DIR) {
@@ -175,6 +193,14 @@ cc.Class({
                 break;
             }
             case 'hit': {
+                if (this.hp < 0) {
+                    this.fsm.die();
+                    break;
+                }
+                break;
+            }
+            case 'die': {
+                this.body.linearVelocity = cc.Vec2.ZERO;
                 break;
             }
         }

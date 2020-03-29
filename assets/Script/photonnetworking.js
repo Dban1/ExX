@@ -15,7 +15,6 @@ cc.Class({
             switch(code) {
                 case EventType.ONJOIN:
                     console.log("EVENT RECEIVED: " + content.a);
-                    break;
             }
         }
         cc.systemEvent.on("joinedRoom", this.joinConfirmed, this);

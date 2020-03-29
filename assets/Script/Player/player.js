@@ -10,7 +10,8 @@ cc.Class({
         gravity: -1000,
         acceleration: 3500,
         jumpSpeed: 50,
-        drag: 100
+        drag: 100,
+        isOwnPlayer: false,
     },
 
     getVelocity: function () {
@@ -24,8 +25,11 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        // Set local input listeners for player
+        if (this.isOwnPlayer) {
+            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        }
 
         this.isOnFloor = false;
         this._moveFlag = 0;
