@@ -707,7 +707,7 @@
     "acceleration": 3500,
     "jumpSpeed": 200,
     "drag": 2000,
-    "isOwnPlayer": false,
+    "isOwnPlayer": true,
     "_id": ""
   },
   {

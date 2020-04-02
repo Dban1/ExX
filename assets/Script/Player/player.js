@@ -1,4 +1,5 @@
 const import_fsm = require('player_fsm');
+const Global = require('Global');
 const LEFT_DIR = 1;
 const RIGHT_DIR = 2;
 
@@ -48,6 +49,11 @@ cc.Class({
         this.fsm = new import_fsm.player_fsm(this);
     },
 
+    // destroy() {
+    //     cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+    //     cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+    // },
+
     onKeyDown: function (event) {
         switch (event.keyCode) {
             case cc.macro.KEY.right:
@@ -66,16 +72,11 @@ cc.Class({
         }
     },
 
-    onCollisionEnter: function(other, self) {
-        console.log("ON COLLISION");
-    },
-
     onBeginContact: function (contact, selfCollider, otherCollider) {
         var normal = contact.getManifold().localNormal;
         if(normal.x == 0) {
             this.isOnFloor = true;
         }
-        console.log(otherCollider.name);
     },
 
     onEndContact: function (contact, selfCollider, otherCollider) {

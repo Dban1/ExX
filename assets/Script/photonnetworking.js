@@ -13,10 +13,14 @@ cc.Class({
         }
         Global.LBC.onEvent = function(code, content, actorNr) {
             switch(code) {
-                case EventType.ONJOIN:
-                    console.log("EVENT RECEIVED: " + content.a);
+            case EventType.ONJOIN:
+                console.log("EVENT RECEIVED: New player in");
+                cc.systemEvent.emit("spawnPlayer", content);
+                break;
             }
+            
         }
+        cc.systemEvent.on("spawnPlayer", this.spawnPlayer, this);
         cc.systemEvent.on("joinedRoom", this.joinConfirmed, this);
         Global.LBC.connectToRegionMaster("asia");
         this.testConnect = () => this.checkConnect();
@@ -38,11 +42,27 @@ cc.Class({
 
     joinConfirmed: function() {
         console.log("joined room: " + Global.LBC.myRoom().name);
-        Global.LBC.myActor().raiseEvent(EventType.ONJOIN, {a: 1}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
+        Global.LBC.myActor().raiseEvent(EventType.ONJOIN, {x: 50, y: 50}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
         cc.systemEvent.off("joinedRoom");
     },
 
-    update (dt) {
+    spawnPlayer: function(content) {
+        console.log("SPAWNING PLAYER");
+        var mob = this;
+        cc.loader.loadRes("prefab/Monster/monster", function(err, fab) {
+            console.log("   attempting to retrieve");
+            if (err) {
+                console.log(err);
+                return;
+            }
+            mob = fab;
+            let node = cc.instantiate(mob);
+            node.parent = cc.director.getScene().getChildByName('Monster_Layer');
+            node.setPosition(content.x, content.y);
+        });
+    }
 
-    },
+    // update (dt) {
+
+    // },
 });
