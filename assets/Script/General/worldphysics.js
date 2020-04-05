@@ -31,7 +31,7 @@ cc.Class({
         // collisionManager.enabledDrawBoundingBox = true;
 
         // Set volume for cc.AudioEngine
-        cc.audioEngine.setEffectsVolume(0.1);
+        cc.audioEngine.setEffectsVolume(0.05);
 
     }
 

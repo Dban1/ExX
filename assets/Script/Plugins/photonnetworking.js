@@ -1,4 +1,3 @@
-// const Photon = require('Photon-Javascript_SDK');
 const Global = require('Global');
 const EventType = {
     ONJOIN: 1,
@@ -25,6 +24,8 @@ cc.Class({
         Global.LBC.connectToRegionMaster("asia");
         this.testConnect = () => this.checkConnect();
         this.schedule(this.testConnect, 2);
+
+        this.eventMgr = cc.director.getScene().getChildByName('EventManager').getComponent('eventManager');
     },
 
     checkConnect: function() {
@@ -48,18 +49,7 @@ cc.Class({
 
     spawnPlayer: function(content) {
         console.log("SPAWNING PLAYER");
-        var mob = this;
-        cc.loader.loadRes("prefab/Monster/monster", function(err, fab) {
-            console.log("   attempting to retrieve");
-            if (err) {
-                console.log(err);
-                return;
-            }
-            mob = fab;
-            let node = cc.instantiate(mob);
-            node.parent = cc.director.getScene().getChildByName('Monster_Layer');
-            node.setPosition(content.x, content.y);
-        });
+        this.eventMgr.spawnPlayer(true);
     }
 
     // update (dt) {
