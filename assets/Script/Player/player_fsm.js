@@ -1,4 +1,4 @@
-const StateMachine = require('./../state-machine');
+const StateMachine = require('./../Plugins/state-machine');
 const LEFT_DIR = 1;
 const RIGHT_DIR = 2;
 

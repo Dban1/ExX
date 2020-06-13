@@ -30,6 +30,7 @@ cc.Class({
         if (this.isOwnPlayer) {
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+            console.log("OWN PLAYER CONTROLS REGISTED");
         }
 
         this.isOnFloor = false;
@@ -48,11 +49,6 @@ cc.Class({
 
         this.fsm = new import_fsm.player_fsm(this);
     },
-
-    // destroy() {
-    //     cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-    //     cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-    // },
 
     onKeyDown: function (event) {
         switch (event.keyCode) {

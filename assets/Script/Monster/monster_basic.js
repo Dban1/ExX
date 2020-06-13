@@ -4,8 +4,8 @@
  * - Non-vengeance
  * - Non-skilled
  */
-const StateMachine = require("./../state-machine");
-const StateMachineHistory = require("./../state-machine-history");
+const StateMachine = require("./../Plugins/state-machine");
+const StateMachineHistory = require("./../Plugins/state-machine-history");
 const Random = require("Random");
 const LEFT_DIR = 1;
 const RIGHT_DIR = 2;
