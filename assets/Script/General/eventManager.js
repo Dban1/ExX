@@ -1,4 +1,4 @@
-const Global = require('Global')
+const Global = require('./../Global')
 
 cc.Class({
     extends: cc.Component,
@@ -10,11 +10,11 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        var LBC = Global.LBC;
-        
+        this.LBC = Global.LBC;
+        console.log("Printing LBC: " + this.LBC);
     },
 
-    spawnPlayer(boolean) {
+    spawnPlayer(playerId) {
         cc.loader.loadRes("prefab/Player/player", function(err, fab) {
             if (err) {
                 console.log(err);
@@ -23,7 +23,9 @@ cc.Class({
             let player = cc.instantiate(fab);
             player.setParent(cc.director.getScene().getChildByName('Player_Layer'));
             player.setPosition(300, 0);
-            player.getComponent('player').isOwnPlayer = false;
+            console.log("Printing LBC: " + this.LBC);
+            player.getComponent('player').isOwnPlayer = (this.LBC.myActor().actorNr == playerId);
+            player.getComponent('player').playerId = playerId;
         });
     }
 });

@@ -52,7 +52,5 @@ cc.Class({
         this.eventMgr.spawnPlayer(true);
     }
 
-    // update (dt) {
-
-    // },
+    // update (dt) { },
 });

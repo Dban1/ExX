@@ -13,6 +13,7 @@ cc.Class({
         jumpSpeed: 50,
         drag: 100,
         isOwnPlayer: false,
+        playerId: -1,
     },
 
     getVelocity: function () {
@@ -64,7 +65,6 @@ cc.Class({
             case cc.macro.KEY.c:
                 this.usingSkill = 1;
                 break;
-
         }
     },
 

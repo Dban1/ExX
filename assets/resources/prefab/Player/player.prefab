@@ -708,6 +708,7 @@
     "jumpSpeed": 200,
     "drag": 2000,
     "isOwnPlayer": true,
+    "playerId": 1,
     "_id": ""
   },
   {
