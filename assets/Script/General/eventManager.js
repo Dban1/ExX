@@ -1,4 +1,5 @@
 const Global = require('./../Global')
+const PlayerManager = require('./../Player/playerManager');
 
 cc.Class({
     extends: cc.Component,
@@ -11,10 +12,14 @@ cc.Class({
 
     onLoad() {
         this.LBC = Global.LBC;
-        console.log("Printing LBC: " + this.LBC);
+        this.cameraMain = cc.find("Canvas/player_camera");
+        this.cameraBack1 = cc.find("Canvas/CameraManager/backlayer1_camera");
+        this.cameraBack2 = cc.find("Canvas/CameraManager/backlayer2_camera");
+        this.playerMgr = cc.director.getScene().getChildByName('PlayerManager').getComponent('playerManager');
     },
 
-    spawnPlayer(playerId) {
+    spawnPlayer(content) {
+        var self = this;
         cc.loader.loadRes("prefab/Player/player", function(err, fab) {
             if (err) {
                 console.log(err);
@@ -22,10 +27,15 @@ cc.Class({
             }
             let player = cc.instantiate(fab);
             player.setParent(cc.director.getScene().getChildByName('Player_Layer'));
-            player.setPosition(300, 0);
-            console.log("Printing LBC: " + this.LBC);
-            player.getComponent('player').isOwnPlayer = (this.LBC.myActor().actorNr == playerId);
-            player.getComponent('player').playerId = playerId;
+            player.setPosition(content.x, content.y);
+            console.log("Print player id: " + content.id);
+            player.getComponent('player').playerId = content.id;
+            self.playerMgr.registerPlayer(content.id, player);
+            if (content.isOwnPlayer) {
+                self.cameraMain.getComponent('player_camera').assignTarget(player);
+                self.cameraBack1.getComponent('player_camera').assignTarget(player);
+                self.cameraBack2.getComponent('player_camera').assignTarget(player);
+            }
         });
     }
 });

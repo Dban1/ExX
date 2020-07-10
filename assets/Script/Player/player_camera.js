@@ -42,4 +42,8 @@ cc.Class({
         // let ratio = targetPos.y / cc.winSize.height;
         // this.camera.zoomRatio = 1 + (0.5 - ratio) * 0.5;
     },
+
+    assignTarget: function (playerNode) {
+        this.target = playerNode;
+    }
 });

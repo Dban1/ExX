@@ -1,17 +1,22 @@
 const import_fsm = require('player_fsm');
-const Global = require('Global');
+const Global = require('./../Global');
+const playerControlEnum = require('./player_control_enum').player_control_enum;
 const LEFT_DIR = 1;
 const RIGHT_DIR = 2;
+const EventType = {
+    ONJOIN: 1,
+    PLAYERCONTROL: 2,
+}
 
-cc.Class({
+export var PlayerScript = cc.Class({
     extends: cc.Component,
 
     properties: {
-        maxSpeed: 350,
-        gravity: -1000,
+        maxSpeed: 260,
+        gravity: -2600,
         acceleration: 3500,
-        jumpSpeed: 50,
-        drag: 100,
+        jumpSpeed: 200,
+        drag: 2000,
         isOwnPlayer: false,
         playerId: -1,
     },
@@ -49,23 +54,78 @@ cc.Class({
         this.skillSound = this.node.getChildByName("sound").getComponent(cc.AudioSource).clip;
 
         this.fsm = new import_fsm.player_fsm(this);
+        this.LBC = Global.LBC;
     },
 
     onKeyDown: function (event) {
+        if (this.playerId != this.LBC.myActor().actorNr) {return;}
+        let controlEnum = playerControlEnum.NEUTRAL;
         switch (event.keyCode) {
             case cc.macro.KEY.right:
                 this._moveFlag |= RIGHT_DIR;
+                controlEnum = playerControlEnum.RIGHT_DIR;
                 break;
             case cc.macro.KEY.left:
                 this._moveFlag |= LEFT_DIR;
+                controlEnum = playerControlEnum.LEFT_DIR;
                 break;
             case cc.macro.KEY.space:
                 if (this.isOnFloor) {this.isJump = true};
+                controlEnum = playerControlEnum.JUMP;
                 break;
             case cc.macro.KEY.c:
                 this.usingSkill = 1;
+                controlEnum = playerControlEnum.ATTACK;
                 break;
         }
+        this.LBC.myActor().raiseEvent(EventType.PLAYERCONTROL, {controlEnum: controlEnum, id: this.playerId, keyDown: 1}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
+        console.log("raised event from playerId: "+this.playerId);
+    },
+
+    receiveInput: function(event) {
+        switch(event.controlEnum) {
+            case playerControlEnum.RIGHT_DIR:
+                if (event.keyDown) {
+                    console.log("moving right");
+                    this._moveFlag |= RIGHT_DIR;
+                }
+                else {this._moveFlag &= ~RIGHT_DIR;}
+                break;
+            case playerControlEnum.LEFT_DIR:
+                if (event.keyDown) {this._moveFlag |= LEFT_DIR;}
+                else {this._moveFlag &= ~LEFT_DIR;}
+                break;
+            case playerControlEnum.JUMP:
+                if (event.keyDown) {
+                    if (this.isOnFloor) {this.isJump = true};
+                } else {
+                    this.isJump = false;
+                }
+                break;
+            case playerControlEnum.ATTACK:
+                this.usingSkill = 1;
+                break;
+        }
+    },
+
+    onKeyUp: function (event) {
+        if (this.playerId != this.LBC.myActor().actorNr) {return;}
+        let controlEnum = playerControlEnum.NEUTRAL;
+        switch (event.keyCode) {
+            case cc.macro.KEY.right:
+                this._moveFlag &= ~RIGHT_DIR;
+                controlEnum = playerControlEnum.RIGHT_DIR;
+                break;
+            case cc.macro.KEY.left:
+                this._moveFlag &= ~LEFT_DIR;
+                controlEnum = playerControlEnum.LEFT_DIR;
+                break;
+            case cc.macro.KEY.space:
+                this.isJump = false;
+                controlEnum = playerControlEnum.JUMP;
+                break;
+        }
+        this.LBC.myActor().raiseEvent(EventType.PLAYERCONTROL, {controlEnum: controlEnum, id: this.playerId, keyDown: 0}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
     },
 
     onBeginContact: function (contact, selfCollider, otherCollider) {
@@ -80,20 +140,6 @@ cc.Class({
         let normal = contact.getManifold().localNormal;
         if(normal.x == 0) {
             this.isOnFloor = false;
-        }
-    },
-
-    onKeyUp: function (event) {
-        switch (event.keyCode) {
-            case cc.macro.KEY.right:
-                this._moveFlag &= ~RIGHT_DIR;
-                break;
-            case cc.macro.KEY.left:
-                this._moveFlag &= ~LEFT_DIR;
-                break;
-            case cc.macro.KEY.space:
-                this.isJump = false;
-                break;
         }
     },
 

@@ -1,6 +1,7 @@
 const Global = require('Global');
 const EventType = {
     ONJOIN: 1,
+    PLAYERCONTROL: 2,
 }
 cc.Class({
     extends: cc.Component,
@@ -13,19 +14,25 @@ cc.Class({
         Global.LBC.onEvent = function(code, content, actorNr) {
             switch(code) {
             case EventType.ONJOIN:
-                console.log("EVENT RECEIVED: New player in");
                 cc.systemEvent.emit("spawnPlayer", content);
+                break;
+            case EventType.PLAYERCONTROL:
+            console.log("EVENT RECEIVED: Player control")    
+            cc.systemEvent.emit("playerControl", content);
                 break;
             }
             
         }
         cc.systemEvent.on("spawnPlayer", this.spawnPlayer, this);
         cc.systemEvent.on("joinedRoom", this.joinConfirmed, this);
+        cc.systemEvent.on("playerControl", this.playerControl, this);
         Global.LBC.connectToRegionMaster("asia");
         this.testConnect = () => this.checkConnect();
         this.schedule(this.testConnect, 2);
 
         this.eventMgr = cc.director.getScene().getChildByName('EventManager').getComponent('eventManager');
+        this.playerMgr = cc.director.getScene().getChildByName('PlayerManager').getComponent('playerManager');
+        this.cameraMgr = cc.find('Canvas/player_camera');
     },
 
     checkConnect: function() {
@@ -43,13 +50,23 @@ cc.Class({
 
     joinConfirmed: function() {
         console.log("joined room: " + Global.LBC.myRoom().name);
-        Global.LBC.myActor().raiseEvent(EventType.ONJOIN, {x: 50, y: 50}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
+        let id = Global.LBC.myActor().actorNr;
+        Global.LBC.myActor().raiseEvent(EventType.ONJOIN, {x: 100, y: 0, id: id, isOwnPlayer: false}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
         cc.systemEvent.off("joinedRoom");
+
+        // Placeholder own Player spawn
+        this.spawnPlayer({x: 300, y: 0, id: Global.LBC.myActor().actorNr, isOwnPlayer: true});
+        let playerNode = this.playerMgr.getPlayerNode(id);
+        // this.cameraMgr.getComponent('player_camera').assignTarget(playerNode);
     },
 
     spawnPlayer: function(content) {
-        console.log("SPAWNING PLAYER");
-        this.eventMgr.spawnPlayer(true);
+        this.eventMgr.spawnPlayer(content);
+    },
+
+    playerControl: function(content) {
+        console.log('Received input {id: '+content.id+', content:' + content);
+        this.playerMgr.receiveInput(content.id, content);
     }
 
     // update (dt) { },
