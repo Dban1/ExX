@@ -5,3 +5,5 @@ export var player_control_enum = {
     JUMP: 3,
     ATTACK: 4
 }
+
+module.exports = player_control_enum;

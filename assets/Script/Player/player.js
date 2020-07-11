@@ -33,10 +33,9 @@ export var PlayerScript = cc.Class({
 
     onLoad() {
         // Set local input listeners for player
-        if (this.isOwnPlayer) {
+        if (this.Player) {
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-            console.log("OWN PLAYER CONTROLS REGISTED");
         }
 
         this.isOnFloor = false;
@@ -79,14 +78,13 @@ export var PlayerScript = cc.Class({
                 break;
         }
         this.LBC.myActor().raiseEvent(EventType.PLAYERCONTROL, {controlEnum: controlEnum, id: this.playerId, keyDown: 1}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
-        console.log("raised event from playerId: "+this.playerId);
+        console.log("raised event from playerId22: "+this.playerId);
     },
 
     receiveInput: function(event) {
         switch(event.controlEnum) {
             case playerControlEnum.RIGHT_DIR:
                 if (event.keyDown) {
-                    console.log("moving right");
                     this._moveFlag |= RIGHT_DIR;
                 }
                 else {this._moveFlag &= ~RIGHT_DIR;}

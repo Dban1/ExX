@@ -40,13 +40,10 @@
       },
       {
         "__id__": 22
-      },
-      {
-        "__id__": 23
       }
     ],
     "_prefab": {
-      "__id__": 24
+      "__id__": 23
     },
     "_opacity": 255,
     "_color": {
@@ -698,7 +695,7 @@
     "_id": ""
   },
   {
-    "__type__": "660cdiVQxdFboYtI7jBN8Wk",
+    "__type__": "b6355dnv+VO95Jt9sOOyQe5",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -712,23 +709,6 @@
     "drag": 2000,
     "isOwnPlayer": true,
     "playerId": 1,
-    "_id": ""
-  },
-  {
-    "__type__": "b6355dnv+VO95Jt9sOOyQe5",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": false,
-    "maxSpeed": 260,
-    "gravity": -2600,
-    "acceleration": 3500,
-    "jumpSpeed": 200,
-    "drag": 2000,
-    "isOwnPlayer": false,
-    "playerId": -1,
     "_id": ""
   },
   {

@@ -24,13 +24,21 @@ export default class PlayerManager extends cc.Component {
 
     receiveInput(playerId: number, content: Object): void {
         let playerNode: cc.Node = this.playerMap.get(playerId);
-        console.log("receive input for playerId: " + playerId);
-        let playerComponent = playerNode.getComponent("player");
+        let playerComponent = playerNode.getComponent("playerTS");
         playerComponent.receiveInput(content);
     }
 
     getPlayerNode(playerId: number): cc.Node {
         return this.playerMap.get(playerId);
+    }
+
+    syncPlayer(playerId: number, content: any) {
+        console.log("syncing player "+playerId+" to pos: "+content.x+", "+content.y);
+        let player: cc.Node = this.playerMap.get(playerId);
+        let playerTarget: cc.Vec2 = new cc.Vec2();
+        playerTarget.x = content.x;
+        playerTarget.y = content.y;
+        player.setPosition(player.parent.convertToNodeSpaceAR(playerTarget));
     }
 
     // update (dt) {}

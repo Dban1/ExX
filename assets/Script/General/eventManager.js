@@ -28,8 +28,8 @@ cc.Class({
             let player = cc.instantiate(fab);
             player.setParent(cc.director.getScene().getChildByName('Player_Layer'));
             player.setPosition(content.x, content.y);
-            console.log("Print player id: " + content.id);
-            player.getComponent('player').playerId = content.id;
+            console.log("Spawning player id: " + content.id);
+            player.getComponent('playerTS').playerId = content.id;
             self.playerMgr.registerPlayer(content.id, player);
             if (content.isOwnPlayer) {
                 self.cameraMain.getComponent('player_camera').assignTarget(player);

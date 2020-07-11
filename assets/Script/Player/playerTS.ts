@@ -1,22 +1,20 @@
-// import {import_fsm} from './player_fsm';
-// import {Global} from './../Global';
-// import {player_control_enum} from './player_control_enum'
-
 import import_fsm = require('./player_fsm');
 import Global = require('./../Global');
-import * as player_control_enum from './player_control_enum';
+import player_control_enum = require('./player_control_enum');
 
 const LEFT_DIR = 1;
 const RIGHT_DIR = 2;
 const EventType = {
     ONJOIN: 1,
     PLAYERCONTROL: 2,
+    SPAWNPLAYER: 3,
+    SYNCPLAYER: 4,
 }
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Player extends cc.Component {
     @property
     maxSpeed: number = 260;
     
@@ -50,7 +48,8 @@ export default class NewClass extends cc.Component {
     skillAnimState: cc.AnimationState;
     skillSound: cc.AudioClip;
     fsm: any;
-    LBC: any;
+    LBC: Photon.LoadBalancing.LoadBalancingClient;
+    playerSyncTimer: ReturnType<typeof setInterval>;
     
     // LIFE-CYCLE CALLBACKS:
 
@@ -58,7 +57,6 @@ export default class NewClass extends cc.Component {
         if (this.isOwnPlayer) {
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-            console.log("OWN PLAYER CONTROLS REGISTED");
         }
 
         this.isOnFloor = false;
@@ -77,7 +75,11 @@ export default class NewClass extends cc.Component {
 
         this.fsm = new import_fsm.player_fsm(this);
         this.LBC = Global.LBC;
-        console.log("playerControlEnum: " + player_control_enum);
+
+        // this.playerSyncTimer = setInterval(() => this.syncMyPlayer(this), 2000);
+        this.schedule(() => {
+            this.syncMyPlayer(this);
+        }, 2);
     }
 
     start () {
@@ -115,15 +117,13 @@ export default class NewClass extends cc.Component {
                 controlEnum = player_control_enum.ATTACK;
                 break;
         }
-        this.LBC.myActor().raiseEvent(EventType.PLAYERCONTROL, {controlEnum: controlEnum, id: this.playerId, keyDown: 1}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
-        console.log("raised event from playerId: "+this.playerId);
+        this.LBC.raiseEvent(EventType.PLAYERCONTROL, {controlEnum: controlEnum, id: this.playerId, keyDown: 1}, {receivers: Photon.LoadBalancing.Constants.ReceiverGroup.Others});
     }
 
     receiveInput(event) {
         switch(event.controlEnum) {
             case player_control_enum.RIGHT_DIR:
                 if (event.keyDown) {
-                    console.log("moving right");
                     this._moveFlag |= RIGHT_DIR;
                 }
                 else {this._moveFlag &= ~RIGHT_DIR;}
@@ -162,7 +162,7 @@ export default class NewClass extends cc.Component {
                 controlEnum = player_control_enum.JUMP;
                 break;
         }
-        this.LBC.myActor().raiseEvent(EventType.PLAYERCONTROL, {controlEnum: controlEnum, id: this.playerId, keyDown: 0}, Photon.LoadBalancing.Constants.ReceiverGroup.Others);
+        this.LBC.raiseEvent(EventType.PLAYERCONTROL, {controlEnum: controlEnum, id: this.playerId, keyDown: 0}, {receivers: Photon.LoadBalancing.Constants.ReceiverGroup.Others});
     }
 
     onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
@@ -178,6 +178,19 @@ export default class NewClass extends cc.Component {
         if(normal.x == 0) {
             this.isOnFloor = false;
         }
+    }
+
+    /**
+     * Raises LBC event to other players to sync my own player
+     */
+    syncMyPlayer(ref: cc.Component) {
+        let myPlayerInfo: any = {}
+        let myPlayer: cc.Vec2 = ref.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+        myPlayerInfo.x = myPlayer.x;
+        myPlayerInfo.y = myPlayer.y;
+        myPlayerInfo.id = Global.LBC.myActor().actorNr;
+        myPlayerInfo.isOwnPlayer = false;
+        Global.LBC.raiseEvent(EventType.SYNCPLAYER, myPlayerInfo, {receivers: Photon.LoadBalancing.Constants.ReceiverGroup.Others});
     }
 
     lerp(value1: number, value2: number, amount: number) {
